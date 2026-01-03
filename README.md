@@ -16,6 +16,33 @@ The system integrates real-time monitoring via the **Blynk IoT Platform**, provi
 ## ⚙️ Logic & Architecture
 The system operates on a distributed logic model:
 
+### System Architecture Diagram
+```mermaid
+graph TD
+    subgraph "Master Node (Controller)"
+        M_ESP[ESP32 Master]
+        Btn[Panic Button] -->|GPIO 25| M_ESP
+        M_ESP -->|GPIO 26| Buzz[Alarm Buzzer]
+    end
+
+    subgraph "Sensor Node (Entry Point)"
+        S_ESP[ESP32 Slave]
+        PIR[PIR Motion Sensor] -->|GPIO 15| S_ESP
+        Ultra[Ultrasonic Sensor] -->|GPIO 04/05| S_ESP
+        Shock[Shock Sensor] -->|GPIO 19| S_ESP
+    end
+
+    subgraph "Cloud & User"
+        Blynk[Blynk Cloud]
+        App[Mobile Dashboard]
+    end
+
+    %% Data Flow Connections
+    S_ESP -.->|Wi-Fi / MQTT| Blynk
+    Blynk -.->|Alert Notification| App
+    M_ESP -.->|ESP-NOW / TCP| S_ESP
+```
+
 ### 1. The Sensor Node (Slave)
 Located at the entry point, this node continuously polls three different data streams:
 * **Proximity Logic:** Uses ultrasonic pulses to detect if an object is within 20cm.
