@@ -16,6 +16,27 @@ The system integrates real-time monitoring via the **Blynk IoT Platform**, provi
 ## ⚙️ Logic & Architecture
 The system operates on a distributed logic model:
 
+## ✍️ Methodology
+
+flowchart TD
+
+    Start((Start)) --> Init[Initialize Sensors & Wi-Fi]
+    Init --> CheckSensors{Read Sensors}
+    CheckSensors -->|Distance < 20cm| Detect[Proximity Alert]
+    CheckSensors -->|PIR == HIGH| Motion[Motion Detected]
+    CheckSensors -->|Shock == HIGH| Tamper[Tamper Alert]
+    
+    Detect --> TrigAlert[Trigger Local Alarm]
+    Motion --> TrigAlert
+    Tamper --> TrigAlert
+    
+    TrigAlert --> Cloud[Send to Blynk App]
+    Cloud --> User((User Notified))
+    
+    CheckSensors -->|No Activity| Sleep[Standby / Loop]
+    Sleep --> CheckSensors
+
+
 ### System Architecture Diagram
 ```mermaid
 graph TD
