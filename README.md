@@ -58,9 +58,12 @@ Acts as a central hub/panic button. It maintains a Wi-Fi connection to the slave
 
 ## ✍️ Methodology
 
-    flowchart TD
+### System Logic Flow Chart
+```mermaid
+flowchart TD
     Start((Start)) --> Init[Initialize Sensors & Wi-Fi]
     Init --> CheckSensors{Read Sensors}
+    
     CheckSensors -->|Distance < 20cm| Detect[Proximity Alert]
     CheckSensors -->|PIR == HIGH| Motion[Motion Detected]
     CheckSensors -->|Shock == HIGH| Tamper[Tamper Alert]
