@@ -66,7 +66,7 @@ Acts as a central hub/panic button. It maintains a Wi-Fi connection to the slave
 * `/firmware`
     * `Sensor_Node.ino`: Main code handling PIR, Ultrasonic, and Shock sensors.
     * `Master_Node.ino`: Code for the central control unit.
-* `/docs`: System diagrams and setup photos.
+
 
 ## 👤 Author
 **Kesava Satish Boppana**
