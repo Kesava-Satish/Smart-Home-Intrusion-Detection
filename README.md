@@ -77,6 +77,7 @@ flowchart TD
     
     CheckSensors -->|No Activity| Sleep[Standby / Loop]
     Sleep --> CheckSensors
+```
 
 
 ## 🚀 How to Run
