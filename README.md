@@ -16,27 +16,6 @@ The system integrates real-time monitoring via the **Blynk IoT Platform**, provi
 ## ⚙️ Logic & Architecture
 The system operates on a distributed logic model:
 
-## ✍️ Methodology
-
-flowchart TD
-
-    Start((Start)) --> Init[Initialize Sensors & Wi-Fi]
-    Init --> CheckSensors{Read Sensors}
-    CheckSensors -->|Distance < 20cm| Detect[Proximity Alert]
-    CheckSensors -->|PIR == HIGH| Motion[Motion Detected]
-    CheckSensors -->|Shock == HIGH| Tamper[Tamper Alert]
-    
-    Detect --> TrigAlert[Trigger Local Alarm]
-    Motion --> TrigAlert
-    Tamper --> TrigAlert
-    
-    TrigAlert --> Cloud[Send to Blynk App]
-    Cloud --> User((User Notified))
-    
-    CheckSensors -->|No Activity| Sleep[Standby / Loop]
-    Sleep --> CheckSensors
-
-
 ### System Architecture Diagram
 ```mermaid
 graph TD
@@ -76,6 +55,26 @@ All data is pushed to the **Blynk Dashboard** via virtual pins (V0, V3) for remo
 ### 2. The Master Node (Controller)
 Acts as a central hub/panic button. It maintains a Wi-Fi connection to the slave node and can trigger manual alerts or reset the system state.
 * **Debounce Logic:** Implemented software debouncing (50ms) for the manual trigger button to prevent false positives.
+
+## ✍️ Methodology
+
+    flowchart TD
+    Start((Start)) --> Init[Initialize Sensors & Wi-Fi]
+    Init --> CheckSensors{Read Sensors}
+    CheckSensors -->|Distance < 20cm| Detect[Proximity Alert]
+    CheckSensors -->|PIR == HIGH| Motion[Motion Detected]
+    CheckSensors -->|Shock == HIGH| Tamper[Tamper Alert]
+    
+    Detect --> TrigAlert[Trigger Local Alarm]
+    Motion --> TrigAlert
+    Tamper --> TrigAlert
+    
+    TrigAlert --> Cloud[Send to Blynk App]
+    Cloud --> User((User Notified))
+    
+    CheckSensors -->|No Activity| Sleep[Standby / Loop]
+    Sleep --> CheckSensors
+
 
 ## 🚀 How to Run
 1.  **Hardware Setup:** Connect sensors to the ESP32 GPIOs as defined in the code (Trig: 4, Echo: 5, PIR: 15, Shock: 19).
